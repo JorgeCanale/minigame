@@ -80,10 +80,8 @@ function cleanGrid() {
 }
 
 function win(){
-    gameState = "win"
-    score += Math.floor((100 - steps) * 0.9)
-    lastSteps = steps;
-    steps = 0;
+   gameState = "win"
+   score += Math.floor((100 - steps) * 0.9)
    goal = setRandomGoal(grid, playerOne, playerTwo);
 }
 
@@ -103,17 +101,12 @@ process.stdin.on("data", (key)=>{
     }
     if(gameState ==="playing"){
         console.clear();
-
-        console.log(`score ${score} | steps: ${steps}\n`)
-
         Render();
         if(message.length > 0) console.log( `\n\n (${message})`)
     }
 
         else if(gameState === "win"){
             console.log("GANASTE, FELICIDADES ")
-            console.log(`te tomo ${lastSteps} pasos legar a la meta`)
-            console.log(`puntaje actual: ${score}`)
             console.log("Presiona alguna tecla de movimiento para iniciar el siguiente nivel")
             gameState = "playing"
     }

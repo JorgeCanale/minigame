@@ -5,6 +5,7 @@ constructor(x,y,controls){
     this.x = x;
     this.y = y;
     this.stats = {
+    lastStep:0,
     step: 0,
     score: 0
     };
