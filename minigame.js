@@ -1,0 +1,170 @@
+let grid = [];
+let message = "";
+let goalY;
+let goalX;
+let score = 0;
+let steps = 0;
+let lastSteps;
+let gameState = "playing";
+
+// defino la clase Player para poder crear mas de un jugador con sus propio set de imputs
+
+class Player{
+constructor(x,y,controls){
+    this.x = x;
+    this.y = y;
+    this.controls = controls
+};
+
+move(dx,dy, grid){
+    const newX = this.x + dx;
+    const newY = this.y + dy;
+    if(grid[newY][newX] === "#"){
+
+        return {moved: false}
+    }
+        this.x = newX;
+        this.y = newY;
+        steps++
+    
+
+    return {moved: true}
+}
+}
+
+const playerOne = new Player(15,15, {    
+    up: 'w',
+    down: 's',
+    left: 'a',
+    right: 'd'});
+
+const playerTwo = new Player(16,16,{
+    up: '\u001B[A',   
+    down: '\u001B[B',
+    left: '\u001B[D',
+    right: '\u001B[C'})
+    
+
+function MapGridInit(width, heigth) {
+    let h;
+    let w;
+    if(heigth !== undefined && heigth > 0 ) {
+        h = heigth;
+    }else{ 
+        h = 9;
+    }
+    if(width !== undefined && width > 0 ) {
+        w = width
+    }else{ 
+        w = 9;
+    }
+    for (let i = 0; i < h; i++) {
+        let gridLine = [];
+        for (let j = 0; j < w; j++) {
+            if (i === 0 || i === h - 1) {
+                gridLine.push("#");
+            } else if (j === 0 || j === w - 1) {
+                gridLine.push("#");
+            } else {
+                gridLine.push("-");
+            };
+        };
+        grid.push(gridLine);
+    };
+    setRandomGoal();
+};
+
+
+function Render() {
+    grid.forEach((square, index) => {
+
+        let line = "";
+        square.forEach((floor, ind) => {
+            if (index === playerOne.y && ind === playerOne.x) {
+                line += "A"
+            }else if(index === playerTwo.y && ind === playerTwo.x) {
+                line += "B"
+            }
+            else if(index === goalY && ind === goalX){
+                line += "G"
+            }else{
+                line += floor
+            }
+
+        })
+        console.log(line);
+    })
+}
+
+function cleanGrid() {
+    grid = [];
+}
+
+function win(){
+    gameState = "win"
+    score += Math.floor((100 - steps) * 0.9)
+    lastSteps = steps;
+    steps = 0;
+    setRandomGoal();
+}
+
+
+function handleInputs(player,key ,grid){
+    const actions = {
+        [player.controls.up]: ()=> player.move(0, -1, grid),
+        [player.controls.down]: ()=> player.move(0, 1, grid),
+        [player.controls.left]: ()=> player.move(-1, 0, grid),
+        [player.controls.right]: ()=> player.move(1, 0, grid)
+    };
+
+    if(actions[key]){
+        actions[key]?.()
+    }
+}
+
+process.stdin.setRawMode(true);
+process.stdin.resume();
+process.stdin.setEncoding("utf8");
+
+process.stdin.on("data", (key)=>{
+    
+    if(key == "\u0003") process.exit();
+    handleInputs(playerOne, key, grid);
+    handleInputs(playerTwo, key, grid)
+    if(goalY === playerOne.y && goalX === playerOne.x && gameState === "playing"){
+        win();
+    }
+    if(gameState ==="playing"){
+        console.clear();
+
+        console.log(`score ${score} | steps: ${steps}\n`)
+
+        Render();
+        if(message.length > 0) console.log( `\n\n (${message})`)
+    }
+
+        else if(gameState === "win"){
+            console.log("GANASTE, FELICIDADES ")
+            console.log(`te tomo ${lastSteps} pasos legar a la meta`)
+            console.log(`puntaje actual: ${score}`)
+            console.log("Presiona alguna tecla de movimiento para iniciar el siguiente nivel")
+            gameState = "playing"
+    }
+    
+})
+
+function setRandomGoal (){
+	do{
+	goalY = Math.floor(Math.random() * (grid.length - 2)) + 1;
+        goalX = Math.floor(Math.random() * (grid[0].length - 2)) + 1;
+		}while(
+		(goalX === playerOne.x && goalY === playerOne.y) || 
+		(playerTwo.x === goalX && playerTwo.y === goalY)
+		)
+	}
+
+cleanGrid();
+
+MapGridInit(50,30);
+
+Render();
