@@ -6,31 +6,8 @@ let score = 0;
 let steps = 0;
 let lastSteps;
 let gameState = "playing";
-
-// defino la clase Player para poder crear mas de un jugador con sus propio set de imputs
-
-class Player{
-constructor(x,y,controls){
-    this.x = x;
-    this.y = y;
-    this.controls = controls
-};
-
-move(dx,dy, grid){
-    const newX = this.x + dx;
-    const newY = this.y + dy;
-    if(grid[newY][newX] === "#"){
-
-        return {moved: false}
-    }
-        this.x = newX;
-        this.y = newY;
-        steps++
-    
-
-    return {moved: true}
-}
-}
+const handleInputs = require('./src/input');
+const Player = require('./src/player');
 
 const playerOne = new Player(15,15, {    
     up: 'w',
@@ -109,18 +86,6 @@ function win(){
 }
 
 
-function handleInputs(player,key ,grid){
-    const actions = {
-        [player.controls.up]: ()=> player.move(0, -1, grid),
-        [player.controls.down]: ()=> player.move(0, 1, grid),
-        [player.controls.left]: ()=> player.move(-1, 0, grid),
-        [player.controls.right]: ()=> player.move(1, 0, grid)
-    };
-
-    if(actions[key]){
-        actions[key]?.()
-    }
-}
 
 process.stdin.setRawMode(true);
 process.stdin.resume();
