@@ -1,13 +1,14 @@
 let grid = [];
 let message = "";
-let goalY;
-let goalX;
 let score = 0;
 let steps = 0;
 let lastSteps;
 let gameState = "playing";
+let goal;
 const handleInputs = require('./src/input');
 const Player = require('./src/player');
+const setRandomGoal = require('./src/goal');
+
 
 const playerOne = new Player(15,15, {    
     up: 'w',
@@ -48,7 +49,8 @@ function MapGridInit(width, heigth) {
         };
         grid.push(gridLine);
     };
-    setRandomGoal();
+    goal = setRandomGoal(grid, playerOne, playerTwo);
+    console.log(goal);
 };
 
 
@@ -58,11 +60,11 @@ function Render() {
         let line = "";
         square.forEach((floor, ind) => {
             if (index === playerOne.y && ind === playerOne.x) {
-                line += "A"
+               line += "A"
             }else if(index === playerTwo.y && ind === playerTwo.x) {
                 line += "B"
             }
-            else if(index === goalY && ind === goalX){
+            else if(index === goal.Y && ind === goal.X){
                 line += "G"
             }else{
                 line += floor
@@ -82,7 +84,7 @@ function win(){
     score += Math.floor((100 - steps) * 0.9)
     lastSteps = steps;
     steps = 0;
-    setRandomGoal();
+   goal = setRandomGoal(grid, playerOne, playerTwo);
 }
 
 
@@ -96,7 +98,7 @@ process.stdin.on("data", (key)=>{
     if(key == "\u0003") process.exit();
     handleInputs(playerOne, key, grid);
     handleInputs(playerTwo, key, grid)
-    if(goalY === playerOne.y && goalX === playerOne.x && gameState === "playing"){
+    if(goal.Y === playerOne.y && goal.X === playerOne.x && gameState === "playing"){
         win();
     }
     if(gameState ==="playing"){
@@ -118,15 +120,6 @@ process.stdin.on("data", (key)=>{
     
 })
 
-function setRandomGoal (){
-	do{
-	goalY = Math.floor(Math.random() * (grid.length - 2)) + 1;
-        goalX = Math.floor(Math.random() * (grid[0].length - 2)) + 1;
-		}while(
-		(goalX === playerOne.x && goalY === playerOne.y) || 
-		(playerTwo.x === goalX && playerTwo.y === goalY)
-		)
-	}
 
 cleanGrid();
 
