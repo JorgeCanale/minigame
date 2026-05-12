@@ -6,7 +6,7 @@ constructor(x,y,controls){
     this.y = y;
     this.stats = {
     lastStep:0,
-    step: 0,
+    steps: 0,
     score: 0
     };
     this.controls = controls;

@@ -1,5 +1,4 @@
 
-
 function MapGridInit(width, heigth) {
     let h;
     let w;
@@ -9,13 +8,10 @@ function MapGridInit(width, heigth) {
         h = 9;
     }
     if(width !== undefined && width > 0 ) {
-        w = width
+        w = width;
     }else{ 
         w = 9;
     }
-
-    let newGrid = []
-    
     for (let i = 0; i < h; i++) {
         let gridLine = [];
         for (let j = 0; j < w; j++) {
@@ -27,10 +23,11 @@ function MapGridInit(width, heigth) {
                 gridLine.push("-");
             };
         };
-        newGrid.push(gridLine);
+        grid.push(gridLine);
     };
-   return newGrid;
+    setRandomGoal();
 };
+
 
 function clearGrid() {
     grid = [];

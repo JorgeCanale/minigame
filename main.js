@@ -1,13 +1,15 @@
-let grid = [];
-let message = "";
-let score = 0;
+let grid;
+let message = "";;
 let steps = 0;
 let lastSteps;
 let gameState = "playing";
-let goal;
+let goal={x:1,y:1};
 const handleInputs = require('./src/input');
 const Player = require('./src/player');
 const setRandomGoal = require('./src/goal');
+const {MapGridInit, clearGrid} = require('./src/grid');
+const Render = require('./src/render');
+
 
 
 const playerOne = new Player(15,15, {    
@@ -21,68 +23,12 @@ const playerTwo = new Player(16,16,{
     down: '\u001B[B',
     left: '\u001B[D',
     right: '\u001B[C'})
-    
-
-function MapGridInit(width, heigth) {
-    let h;
-    let w;
-    if(heigth !== undefined && heigth > 0 ) {
-        h = heigth;
-    }else{ 
-        h = 9;
-    }
-    if(width !== undefined && width > 0 ) {
-        w = width
-    }else{ 
-        w = 9;
-    }
-    for (let i = 0; i < h; i++) {
-        let gridLine = [];
-        for (let j = 0; j < w; j++) {
-            if (i === 0 || i === h - 1) {
-                gridLine.push("#");
-            } else if (j === 0 || j === w - 1) {
-                gridLine.push("#");
-            } else {
-                gridLine.push("-");
-            };
-        };
-        grid.push(gridLine);
-    };
-    goal = setRandomGoal(grid, playerOne, playerTwo);
-    console.log(goal);
-};
 
 
-function Render() {
-    grid.forEach((square, index) => {
-
-        let line = "";
-        square.forEach((floor, ind) => {
-            if (index === playerOne.y && ind === playerOne.x) {
-               line += "A"
-            }else if(index === playerTwo.y && ind === playerTwo.x) {
-                line += "B"
-            }
-            else if(index === goal.Y && ind === goal.X){
-                line += "G"
-            }else{
-                line += floor
-            }
-
-        })
-        console.log(line);
-    })
-}
-
-function cleanGrid() {
-    grid = [];
-}
 
 function win(){
    gameState = "win"
-   score += Math.floor((100 - steps) * 0.9)
-   goal = setRandomGoal(grid, playerOne, playerTwo);
+   goal = setRandomGoal(grid, playerOne, playerTwo); 
 }
 
 
@@ -100,8 +46,9 @@ process.stdin.on("data", (key)=>{
         win();
     }
     if(gameState ==="playing"){
+
         console.clear();
-        Render();
+        Render(grid, goal, playerOne, playerTwo);
         if(message.length > 0) console.log( `\n\n (${message})`)
     }
 
@@ -114,8 +61,7 @@ process.stdin.on("data", (key)=>{
 })
 
 
-cleanGrid();
-
-MapGridInit(50,30);
-
-Render();
+clearGrid();
+grid = 	MapGridInit(50,20);
+goal = setRandomGoal(grid,playerOne, playerTwo);
+Render(grid, goal, playerOne, playerTwo);

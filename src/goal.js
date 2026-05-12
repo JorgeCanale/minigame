@@ -13,5 +13,6 @@ function setRandomGoal (grid, playerOne, playerTwo){
 	return {Y, X};
 	}
 
+
 module.exports = setRandomGoal;
 
