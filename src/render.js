@@ -1,6 +1,5 @@
-function Render() {
-    grid.forEach((square, index) => {
-
+function Render(incomingGrid, goal, playerOne, playerTwo) {
+    incomingGrid.forEach((square, index) => {
         let line = "";
         square.forEach((floor, ind) => {
             if (index === playerOne.y && ind === playerOne.x) {
@@ -8,7 +7,7 @@ function Render() {
             }else if(index === playerTwo.y && ind === playerTwo.x) {
                 line += "B"
             }
-            else if(index === goalY && ind === goalX){
+            else if(index === goal.Y && ind === goal.X){
                 line += "G"
             }else{
                 line += floor
