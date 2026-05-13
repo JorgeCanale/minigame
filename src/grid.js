@@ -32,9 +32,9 @@ function MapGridInit(width, heigth) {
    return newGrid;
 };
 
-function clearGrid() {
-    grid = [];
-};
+function update (players){
+	
+}
 
-module.exports = { MapGridInit, clearGrid};
+module.exports = { MapGridInit};
 

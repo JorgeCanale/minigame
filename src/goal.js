@@ -1,16 +1,16 @@
 
 
 function setRandomGoal (grid, playerOne, playerTwo){
-	let Y = 0;
-	let X = 0;
+	let y = 0;
+	let x = 0;
 	do{
-	Y = Math.floor(Math.random() * (grid.length - 2)) + 1;
-        X = Math.floor(Math.random() * (grid[0].length - 2)) + 1;
+	y = Math.floor(Math.random() * (grid.length - 2)) + 1;
+        x = Math.floor(Math.random() * (grid[0].length - 2)) + 1;
 		}while(
-		(X === playerOne.x && Y === playerOne.y) || 
-		(playerTwo.x === X && playerTwo.y === Y)
+		(x === playerOne.x && y === playerOne.y) || 
+		(playerTwo.x === x && playerTwo.y === y)
 		)
-	return {Y, X};
+	return {y,x};
 	}
 
 

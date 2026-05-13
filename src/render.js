@@ -7,7 +7,7 @@ function Render(incomingGrid, goal, playerOne, playerTwo) {
             }else if(index === playerTwo.y && ind === playerTwo.x) {
                 line += "B"
             }
-            else if(index === goal.Y && ind === goal.X){
+            else if(index === goal.y && ind === goal.x){
                 line += "G"
             }else{
                 line += floor
